@@ -1,0 +1,46 @@
+DDPG and D4PG -> off policy
+the actor takes states and produces actions
+the critic takes states and the actions from the actor and produces Q values for those actions
+
+
+D4PG -> instead of directly producing a Q value deteministicly it produces n-atoms [same iodea as in DQN extensions for the categorical DQNs]
+
+
+-----------------------------------------------------------------------------------------
+A2C ->  on policy
+the actor takes states and produces actions
+the critic takes states and produces values{the baseline} for these states which will then be used to compute the advantage ( advantage is the R-baseline) of the gradient to avoid very large and abrupt gradients between batches as it was the issue in REINFORCE
+
+Remember REINFORCE issues: no baseline for the Q used in the forumla of the loss -> 
+ High variance between batches of training!
+ + to compute the Q values it needed to finish complete episodes
+
+ the baseline solves the high variance 
+ the whole episode problem can be solved by TD learning
+
+
+PPO -> on policy  [tastes like "on trajectory", something in the middle, we first produce a large trajectory[could contain several episodes inside], then we train on it for a few epochs the acquire a new one and so on]
+it has 2 fancy parts
+1- a smoothed advantage -> td (lambda) formula instead of TD(0)<1 step in bellman eqn> or TD(1)<the whole episode "montecarlo">
+2- a smoothed gradient update between the batches of training (proximal policy gradient) r_t(theta) = P_theta(a_t|s_t) / P_theta_old(a_t|s_t)
+and it uses a discount for then the objective becomes E_t^clip[
+min(
+
+r_t(theta) * A_t
+
+,
+
+
+clip(r_t(theta), 1-epsilon, 1+epsilon) * A_t)
+
+] where A_t is the smoothed advantage from 1 and epsilon limits the size of the update
+
+
+TD = https://medium.com/@violante.andre/simple-reinforcement-learning-temporal-difference-learning-e883ea0d65b0
+
+
+TD(1) vs Montecarlo -> 
+TD(1) needs a whole episode and while the episode unrolls it is computing the reward online step by step
+if the update of the value function is done at the end of the episode then it is MC
+if it is done before the end then it is not MC, but TD(1)
+

@@ -206,9 +206,9 @@ if __name__ == "__main__":
 
                 loss_value_v = F.mse_loss(
                     value_v.squeeze(-1), vals_ref_v)
-
+                
                 adv_v = vals_ref_v.unsqueeze(dim=-1) - \
-                    value_v.detach()
+                    value_v.detach() #R -V
                 log_prob_v = adv_v * calc_logprob(
                     mu_v, var_v, actions_v)
                 loss_policy_v = -log_prob_v.mean()
