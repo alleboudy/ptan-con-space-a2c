@@ -44,3 +44,6 @@ TD(1) needs a whole episode and while the episode unrolls it is computing the re
 if the update of the value function is done at the end of the episode then it is MC
 if it is done before the end then it is not MC, but TD(1)
 
+
+
+TRPO vs PPO -> to limit the policy update, TRPO instead of clipping the ratio between the old and new policy uses a fancy conjugate gradient and line search.
